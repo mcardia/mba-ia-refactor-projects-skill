@@ -1,0 +1,6 @@
+2026-11-22T14:09:07.119Z [INFO] Frankenstein LMS rodando na porta 3100...
+2026-11-22T14:09:07.582Z [INFO] Processing card payment {"cardLast4":"4444","amount":497,"gatewayConfigured":false}
+2026-11-22T14:09:07.614Z [INFO] Checkout completed {"enrollmentId":2,"courseId":2}
+2026-11-22T14:09:07.617Z [INFO] Processing card payment {"cardLast4":"4444","amount":997,"gatewayConfigured":false}
+2026-11-22T14:09:07.618Z [INFO] Processing card payment {"cardLast4":"2222","amount":497,"gatewayConfigured":false}
+2026-11-22T14:09:07.619Z [INFO] Checkout completed {"enrollmentId":3,"courseId":2}

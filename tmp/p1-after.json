@@ -1,0 +1,264 @@
+[
+ {
+  "step": "GET /",
+  "status": 200,
+  "keys": [
+   "endpoints",
+   "mensagem",
+   "versao"
+  ],
+  "snippet": "{\"endpoints\":{\"health\":\"/health\",\"login\":\"/login\",\"pedidos\":\"/pedidos\",\"produtos\":\"/produtos\",\"relatorios\":\"/relatorios/vendas\",\"usuarios\":\""
+ },
+ {
+  "step": "GET /health",
+  "status": 200,
+  "keys": [
+   "ambiente",
+   "counts",
+   "database",
+   "status",
+   "versao"
+  ],
+  "snippet": "{\"ambiente\":\"producao\",\"counts\":{\"pedidos\":0,\"produtos\":10,\"usuarios\":3},\"database\":\"connected\",\"status\":\"ok\",\"versao\":\"1.0.0\"}\n"
+ },
+ {
+  "step": "GET /produtos",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":[{\"ativo\":1,\"categoria\":\"informatica\",\"criado_em\":\"2026-11-22 14:02:17\",\"descricao\":\"Notebook potente para jogos\",\"estoque\":10,\"id\""
+ },
+ {
+  "step": "GET /produtos/1",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"ativo\":1,\"categoria\":\"informatica\",\"criado_em\":\"2026-11-22 14:02:17\",\"descricao\":\"Notebook potente para jogos\",\"estoque\":10,\"id\":"
+ },
+ {
+  "step": "GET /produtos/999 missing",
+  "status": 404,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Produto n\\u00e3o encontrado\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "GET /produtos/busca?q=Mouse",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso",
+   "total"
+  ],
+  "snippet": "{\"dados\":[{\"ativo\":1,\"categoria\":\"informatica\",\"criado_em\":\"2026-11-22 14:02:17\",\"descricao\":\"Mouse sem fio ergon\\u00f4mico\",\"estoque\":50,\"i"
+ },
+ {
+  "step": "GET /produtos/busca?categoria=moveis&preco_max=2000",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso",
+   "total"
+  ],
+  "snippet": "{\"dados\":[{\"ativo\":1,\"categoria\":\"moveis\",\"criado_em\":\"2026-11-22 14:02:17\",\"descricao\":\"Cadeira ergon\\u00f4mica\",\"estoque\":8,\"id\":6,\"nome\":"
+ },
+ {
+  "step": "POST /produtos",
+  "status": 201,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"id\":11},\"mensagem\":\"Produto criado\",\"sucesso\":true}\n"
+ },
+ {
+  "step": "POST /produtos invalid",
+  "status": 400,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Pre\\u00e7o \\u00e9 obrigat\\u00f3rio\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "PUT /produtos/11",
+  "status": 200,
+  "keys": [
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\"mensagem\":\"Produto atualizado\",\"sucesso\":true}\n"
+ },
+ {
+  "step": "DELETE /produtos/11",
+  "status": 200,
+  "keys": [
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\"mensagem\":\"Produto deletado\",\"sucesso\":true}\n"
+ },
+ {
+  "step": "GET /usuarios",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":[{\"criado_em\":\"2026-11-22 14:02:18\",\"email\":\"admin@loja.com\",\"id\":1,\"nome\":\"Admin\",\"tipo\":\"admin\"},{\"criado_em\":\"2026-11-22 14:02:1"
+ },
+ {
+  "step": "GET /usuarios/1",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"criado_em\":\"2026-11-22 14:02:18\",\"email\":\"admin@loja.com\",\"id\":1,\"nome\":\"Admin\",\"tipo\":\"admin\"},\"sucesso\":true}\n"
+ },
+ {
+  "step": "GET /usuarios/999 missing",
+  "status": 404,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Usu\\u00e1rio n\\u00e3o encontrado\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "POST /usuarios",
+  "status": 201,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"id\":4},\"sucesso\":true}\n"
+ },
+ {
+  "step": "POST /login",
+  "status": 200,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"email\":\"admin@loja.com\",\"id\":1,\"nome\":\"Admin\",\"tipo\":\"admin\"},\"mensagem\":\"Login OK\",\"sucesso\":true}\n"
+ },
+ {
+  "step": "POST /login bad password",
+  "status": 401,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Email ou senha inv\\u00e1lidos\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "POST /login new user",
+  "status": 200,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"email\":\"novo@email.com\",\"id\":4,\"nome\":\"Novo\",\"tipo\":\"cliente\"},\"mensagem\":\"Login OK\",\"sucesso\":true}\n"
+ },
+ {
+  "step": "POST /pedidos",
+  "status": 201,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"pedido_id\":1,\"total\":479.7},\"mensagem\":\"Pedido criado com sucesso\",\"sucesso\":true}\n"
+ },
+ {
+  "step": "POST /pedidos empty",
+  "status": 400,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Pedido deve ter pelo menos 1 item\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "POST /pedidos no stock",
+  "status": 400,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Estoque insuficiente para Mouse Wireless\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "GET /pedidos",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":[{\"criado_em\":\"2026-11-22 14:02:18\",\"id\":1,\"itens\":[{\"preco_unitario\":89.9,\"produto_id\":2,\"produto_nome\":\"Mouse Wireless\",\"quantida"
+ },
+ {
+  "step": "GET /pedidos/usuario/2",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":[{\"criado_em\":\"2026-11-22 14:02:18\",\"id\":1,\"itens\":[{\"preco_unitario\":89.9,\"produto_id\":2,\"produto_nome\":\"Mouse Wireless\",\"quantida"
+ },
+ {
+  "step": "PUT /pedidos/1/status",
+  "status": 200,
+  "keys": [
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\"mensagem\":\"Status atualizado\",\"sucesso\":true}\n"
+ },
+ {
+  "step": "PUT /pedidos/1/status bad status",
+  "status": 400,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Status inv\\u00e1lido\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "GET /relatorios/vendas",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\"dados\":{\"desconto_aplicavel\":0,\"faturamento_bruto\":479.7,\"faturamento_liquido\":479.7,\"pedidos_aprovados\":1,\"pedidos_cancelados\":0,\"pedidos"
+ },
+ {
+  "step": "POST /admin/query anonymous",
+  "status": 403,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Endpoint administrativo desabilitado\",\"sucesso\":false}\n"
+ },
+ {
+  "step": "POST /admin/reset-db anonymous",
+  "status": 403,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\"erro\":\"Endpoint administrativo desabilitado\",\"sucesso\":false}\n"
+ }
+]

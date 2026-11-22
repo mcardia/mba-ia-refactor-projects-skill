@@ -1,0 +1,39 @@
+ * Serving Flask app 'app'
+ * Debug mode: off
+2026-11-22 11:43:58,050 INFO werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5100
+2026-11-22 11:43:58,050 INFO werkzeug: [33mPress CTRL+C to quit[0m
+2026-11-22 11:43:58,130 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET / HTTP/1.1" 200 -
+2026-11-22 11:43:58,198 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET / HTTP/1.1" 200 -
+2026-11-22 11:43:58,200 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /health HTTP/1.1" 200 -
+2026-11-22 11:43:58,217 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /tasks HTTP/1.1" 200 -
+2026-11-22 11:43:58,221 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /tasks/1 HTTP/1.1" 200 -
+2026-11-22 11:43:58,223 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[33mGET /tasks/999 HTTP/1.1[0m" 404 -
+2026-11-22 11:43:58,226 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /tasks/search?q=bug HTTP/1.1" 200 -
+2026-11-22 11:43:58,228 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /tasks/search?status=pending&priority=1 HTTP/1.1" 200 -
+2026-11-22 11:43:58,230 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mGET /tasks/search?priority=abc HTTP/1.1[0m" 400 -
+2026-11-22 11:43:58,233 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /tasks/stats HTTP/1.1" 200 -
+2026-11-22 11:43:58,248 INFO controllers.task_controller: Task criada: 11
+2026-11-22 11:43:58,249 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[35m[1mPOST /tasks HTTP/1.1[0m" 201 -
+2026-11-22 11:43:58,250 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mPOST /tasks HTTP/1.1[0m" 400 -
+2026-11-22 11:43:58,252 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mPOST /tasks HTTP/1.1[0m" 400 -
+2026-11-22 11:43:58,259 INFO controllers.task_controller: Task atualizada: 11
+2026-11-22 11:43:58,259 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "PUT /tasks/11 HTTP/1.1" 200 -
+2026-11-22 11:43:58,261 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mDELETE /tasks/11 HTTP/1.1[0m" 401 -
+2026-11-22 11:43:58,265 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /users HTTP/1.1" 200 -
+2026-11-22 11:43:58,268 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /users/1 HTTP/1.1" 200 -
+2026-11-22 11:43:58,380 INFO controllers.user_controller: Usuário criado: 4
+2026-11-22 11:43:58,381 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-11-22 11:43:58,382 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mPOST /users HTTP/1.1[0m" 401 -
+2026-11-22 11:43:58,383 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mPOST /users HTTP/1.1[0m" 400 -
+2026-11-22 11:43:58,384 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mPUT /users/4 HTTP/1.1[0m" 401 -
+2026-11-22 11:43:58,386 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /users/1/tasks HTTP/1.1" 200 -
+2026-11-22 11:43:58,469 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "POST /login HTTP/1.1" 200 -
+2026-11-22 11:43:58,575 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2026-11-22 11:43:58,576 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mGET /reports/summary HTTP/1.1[0m" 401 -
+2026-11-22 11:43:58,578 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /reports/user/1 HTTP/1.1" 200 -
+2026-11-22 11:43:58,580 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "GET /categories HTTP/1.1" 200 -
+2026-11-22 11:43:58,588 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[35m[1mPOST /categories HTTP/1.1[0m" 201 -
+2026-11-22 11:43:58,592 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "PUT /categories/5 HTTP/1.1" 200 -
+2026-11-22 11:43:58,594 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mDELETE /categories/5 HTTP/1.1[0m" 401 -
+2026-11-22 11:43:58,595 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:43:58] "[31m[1mDELETE /users/4 HTTP/1.1[0m" 401 -

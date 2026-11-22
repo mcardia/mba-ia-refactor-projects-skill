@@ -1,0 +1,68 @@
+[
+ {
+  "step": "POST /api/checkout new user paid",
+  "status": 200,
+  "keys": [
+   "enrollment_id",
+   "msg"
+  ],
+  "snippet": "{\"msg\":\"Sucesso\",\"enrollment_id\":2}"
+ },
+ {
+  "step": "POST /api/checkout denied",
+  "status": 400,
+  "keys": "text",
+  "snippet": "Pagamento recusado"
+ },
+ {
+  "step": "POST /api/checkout existing user",
+  "status": 200,
+  "keys": [
+   "enrollment_id",
+   "msg"
+  ],
+  "snippet": "{\"msg\":\"Sucesso\",\"enrollment_id\":3}"
+ },
+ {
+  "step": "POST /api/checkout missing fields",
+  "status": 400,
+  "keys": "text",
+  "snippet": "Bad Request"
+ },
+ {
+  "step": "POST /api/checkout unknown course",
+  "status": 404,
+  "keys": "text",
+  "snippet": "Curso não encontrado"
+ },
+ {
+  "step": "GET /api/admin/financial-report anonymous",
+  "status": 200,
+  "keys": "list[2]",
+  "snippet": "[{\"course\":\"Clean Architecture\",\"revenue\":997,\"students\":[{\"student\":\"Leonan\",\"paid\":997}]},{\"course\":\"Docker\",\"revenue\":994,\"students\":[{\"s"
+ },
+ {
+  "step": "GET /api/admin/financial-report with token",
+  "status": 200,
+  "keys": "list[2]",
+  "snippet": "[{\"course\":\"Clean Architecture\",\"revenue\":997,\"students\":[{\"student\":\"Leonan\",\"paid\":997}]},{\"course\":\"Docker\",\"revenue\":994,\"students\":[{\"s"
+ },
+ {
+  "step": "DELETE /api/users/999 anonymous unknown id",
+  "status": 200,
+  "keys": "text",
+  "snippet": "Usuário deletado, mas as matrículas e pagamentos ficaram sujos no banco."
+ },
+ {
+  "step": "DELETE /api/users/1 with token",
+  "status": 200,
+  "keys": "text",
+  "snippet": "Usuário deletado, mas as matrículas e pagamentos ficaram sujos no banco."
+ },
+ {
+  "step": "GET /api/admin/financial-report after delete",
+  "status": 200,
+  "keys": "list[2]",
+  "snippet": "[{\"course\":\"Clean Architecture\",\"revenue\":997,\"students\":[{\"student\":\"Unknown\",\"paid\":997}]},{\"course\":\"Docker\",\"revenue\":994,\"students\":[{\""
+ }
+]

@@ -1,0 +1,45 @@
+==================================================
+SERVIDOR INICIADO
+Rodando em http://localhost:5000
+==================================================
+ * Serving Flask app 'app'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.5:5000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 854-008-893
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /produtos HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /produtos/1 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[33mGET /produtos/999 HTTP/1.1[0m" 404 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /produtos/busca?q=Mouse HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /produtos/busca?categoria=moveis&preco_max=2000 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[35m[1mPOST /produtos HTTP/1.1[0m" 201 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[31m[1mPOST /produtos HTTP/1.1[0m" 400 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "PUT /produtos/11 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "DELETE /produtos/11 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /usuarios HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /usuarios/1 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[33mGET /usuarios/999 HTTP/1.1[0m" 404 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[35m[1mPOST /usuarios HTTP/1.1[0m" 201 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[35m[1mPOST /pedidos HTTP/1.1[0m" 201 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[31m[1mPOST /pedidos HTTP/1.1[0m" 400 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[31m[1mPOST /pedidos HTTP/1.1[0m" 400 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /pedidos HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /pedidos/usuario/2 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "PUT /pedidos/1/status HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "[31m[1mPUT /pedidos/1/status HTTP/1.1[0m" 400 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "GET /relatorios/vendas HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "POST /admin/query HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:02:17] "POST /admin/reset-db HTTP/1.1" 200 -
+/usr/lib64/python3.14/multiprocessing/resource_tracker.py:475: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-50nyhzje'}
+  warnings.warn(

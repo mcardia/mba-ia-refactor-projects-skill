@@ -1,0 +1,263 @@
+[
+ {
+  "step": "GET /",
+  "status": 200,
+  "keys": [
+   "endpoints",
+   "mensagem",
+   "versao"
+  ],
+  "snippet": "{\n  \"endpoints\": {\n    \"health\": \"/health\",\n    \"login\": \"/login\",\n    \"pedidos\": \"/pedidos\",\n    \"produtos\": \"/produtos\",\n    \"relatorios\":"
+ },
+ {
+  "step": "GET /health",
+  "status": 200,
+  "keys": [
+   "ambiente",
+   "counts",
+   "database",
+   "db_path",
+   "debug",
+   "secret_key",
+   "status",
+   "versao"
+  ],
+  "snippet": "{\n  \"ambiente\": \"producao\",\n  \"counts\": {\n    \"pedidos\": 0,\n    \"produtos\": 10,\n    \"usuarios\": 3\n  },\n  \"database\": \"connected\",\n  \"db_path"
+ },
+ {
+  "step": "GET /produtos",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": [\n    {\n      \"ativo\": 1,\n      \"categoria\": \"informatica\",\n      \"criado_em\": \"2026-11-22 14:02:17\",\n      \"descricao\": \"Noteb"
+ },
+ {
+  "step": "GET /produtos/1",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"ativo\": 1,\n    \"categoria\": \"informatica\",\n    \"criado_em\": \"2026-11-22 14:02:17\",\n    \"descricao\": \"Notebook potente pa"
+ },
+ {
+  "step": "GET /produtos/999 missing",
+  "status": 404,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"erro\": \"Produto n\\u00e3o encontrado\",\n  \"sucesso\": false\n}\n"
+ },
+ {
+  "step": "GET /produtos/busca?q=Mouse",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso",
+   "total"
+  ],
+  "snippet": "{\n  \"dados\": [\n    {\n      \"ativo\": 1,\n      \"categoria\": \"informatica\",\n      \"criado_em\": \"2026-11-22 14:02:17\",\n      \"descricao\": \"Mouse"
+ },
+ {
+  "step": "GET /produtos/busca?categoria=moveis&preco_max=2000",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso",
+   "total"
+  ],
+  "snippet": "{\n  \"dados\": [\n    {\n      \"ativo\": 1,\n      \"categoria\": \"moveis\",\n      \"criado_em\": \"2026-11-22 14:02:17\",\n      \"descricao\": \"Cadeira er"
+ },
+ {
+  "step": "POST /produtos",
+  "status": 201,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"id\": 11\n  },\n  \"mensagem\": \"Produto criado\",\n  \"sucesso\": true\n}\n"
+ },
+ {
+  "step": "POST /produtos invalid",
+  "status": 400,
+  "keys": [
+   "erro"
+  ],
+  "snippet": "{\n  \"erro\": \"Pre\\u00e7o \\u00e9 obrigat\\u00f3rio\"\n}\n"
+ },
+ {
+  "step": "PUT /produtos/11",
+  "status": 200,
+  "keys": [
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"mensagem\": \"Produto atualizado\",\n  \"sucesso\": true\n}\n"
+ },
+ {
+  "step": "DELETE /produtos/11",
+  "status": 200,
+  "keys": [
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"mensagem\": \"Produto deletado\",\n  \"sucesso\": true\n}\n"
+ },
+ {
+  "step": "GET /usuarios",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": [\n    {\n      \"criado_em\": \"2026-11-22 14:02:17\",\n      \"email\": \"admin@loja.com\",\n      \"id\": 1,\n      \"nome\": \"Admin\",\n      "
+ },
+ {
+  "step": "GET /usuarios/1",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"criado_em\": \"2026-11-22 14:02:17\",\n    \"email\": \"admin@loja.com\",\n    \"id\": 1,\n    \"nome\": \"Admin\",\n    \"senha\": \"admin1"
+ },
+ {
+  "step": "GET /usuarios/999 missing",
+  "status": 404,
+  "keys": [
+   "erro"
+  ],
+  "snippet": "{\n  \"erro\": \"Usu\\u00e1rio n\\u00e3o encontrado\"\n}\n"
+ },
+ {
+  "step": "POST /usuarios",
+  "status": 201,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"id\": 4\n  },\n  \"sucesso\": true\n}\n"
+ },
+ {
+  "step": "POST /login",
+  "status": 200,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"email\": \"admin@loja.com\",\n    \"id\": 1,\n    \"nome\": \"Admin\",\n    \"tipo\": \"admin\"\n  },\n  \"mensagem\": \"Login OK\",\n  \"sucess"
+ },
+ {
+  "step": "POST /login bad password",
+  "status": 401,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"erro\": \"Email ou senha inv\\u00e1lidos\",\n  \"sucesso\": false\n}\n"
+ },
+ {
+  "step": "POST /login new user",
+  "status": 200,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"email\": \"novo@email.com\",\n    \"id\": 4,\n    \"nome\": \"Novo\",\n    \"tipo\": \"cliente\"\n  },\n  \"mensagem\": \"Login OK\",\n  \"suces"
+ },
+ {
+  "step": "POST /pedidos",
+  "status": 201,
+  "keys": [
+   "dados",
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"pedido_id\": 1,\n    \"total\": 479.7\n  },\n  \"mensagem\": \"Pedido criado com sucesso\",\n  \"sucesso\": true\n}\n"
+ },
+ {
+  "step": "POST /pedidos empty",
+  "status": 400,
+  "keys": [
+   "erro"
+  ],
+  "snippet": "{\n  \"erro\": \"Pedido deve ter pelo menos 1 item\"\n}\n"
+ },
+ {
+  "step": "POST /pedidos no stock",
+  "status": 400,
+  "keys": [
+   "erro",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"erro\": \"Estoque insuficiente para Mouse Wireless\",\n  \"sucesso\": false\n}\n"
+ },
+ {
+  "step": "GET /pedidos",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": [\n    {\n      \"criado_em\": \"2026-11-22 14:02:17\",\n      \"id\": 1,\n      \"itens\": [\n        {\n          \"preco_unitario\": 89.9,\n "
+ },
+ {
+  "step": "GET /pedidos/usuario/2",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": [\n    {\n      \"criado_em\": \"2026-11-22 14:02:17\",\n      \"id\": 1,\n      \"itens\": [\n        {\n          \"preco_unitario\": 89.9,\n "
+ },
+ {
+  "step": "PUT /pedidos/1/status",
+  "status": 200,
+  "keys": [
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"mensagem\": \"Status atualizado\",\n  \"sucesso\": true\n}\n"
+ },
+ {
+  "step": "PUT /pedidos/1/status bad status",
+  "status": 400,
+  "keys": [
+   "erro"
+  ],
+  "snippet": "{\n  \"erro\": \"Status inv\\u00e1lido\"\n}\n"
+ },
+ {
+  "step": "GET /relatorios/vendas",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": {\n    \"desconto_aplicavel\": 0,\n    \"faturamento_bruto\": 479.7,\n    \"faturamento_liquido\": 479.7,\n    \"pedidos_aprovados\": 1,\n  "
+ },
+ {
+  "step": "POST /admin/query anonymous",
+  "status": 200,
+  "keys": [
+   "dados",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"dados\": [\n    {\n      \"n\": 10\n    }\n  ],\n  \"sucesso\": true\n}\n"
+ },
+ {
+  "step": "POST /admin/reset-db anonymous",
+  "status": 200,
+  "keys": [
+   "mensagem",
+   "sucesso"
+  ],
+  "snippet": "{\n  \"mensagem\": \"Banco de dados resetado\",\n  \"sucesso\": true\n}\n"
+ }
+]

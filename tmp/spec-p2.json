@@ -1,0 +1,12 @@
+[
+ {"m": "POST", "p": "/api/checkout", "body": {"usr": "Guilherme", "eml": "gui@fullcycle.com.br", "pwd": "senhaforte", "c_id": 2, "card": "4111222233334444"}, "label": "new user paid"},
+ {"m": "POST", "p": "/api/checkout", "body": {"usr": "Joao", "eml": "joao@teste.com", "pwd": "123", "c_id": 1, "card": "5111222233334444"}, "label": "denied"},
+ {"m": "POST", "p": "/api/checkout", "body": {"usr": "Leonan", "eml": "leonan@fullcycle.com.br", "c_id": 2, "card": "4999000011112222"}, "label": "existing user"},
+ {"m": "POST", "p": "/api/checkout", "body": {"usr": "x"}, "label": "missing fields"},
+ {"m": "POST", "p": "/api/checkout", "body": {"usr": "Y", "eml": "y@y.com", "c_id": 99, "card": "4111"}, "label": "unknown course"},
+ {"m": "GET", "p": "/api/admin/financial-report", "label": "anonymous"},
+ {"m": "GET", "p": "/api/admin/financial-report", "headers": {"X-Admin-Token": "test-token"}, "label": "with token"},
+ {"m": "DELETE", "p": "/api/users/999", "label": "anonymous unknown id"},
+ {"m": "DELETE", "p": "/api/users/1", "headers": {"X-Admin-Token": "test-token"}, "label": "with token"},
+ {"m": "GET", "p": "/api/admin/financial-report", "headers": {"X-Admin-Token": "test-token"}, "label": "after delete"}
+]

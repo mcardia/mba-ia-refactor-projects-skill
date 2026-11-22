@@ -1,0 +1,41 @@
+ * Serving Flask app 'app'
+ * Debug mode: off
+2026-11-22 11:12:21,168 INFO werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5100
+2026-11-22 11:12:21,168 INFO werkzeug: [33mPress CTRL+C to quit[0m
+2026-11-22 11:12:21,444 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET / HTTP/1.1" 200 -
+2026-11-22 11:12:21,476 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET / HTTP/1.1" 200 -
+2026-11-22 11:12:21,477 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /health HTTP/1.1" 200 -
+2026-11-22 11:12:21,487 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /tasks HTTP/1.1" 200 -
+2026-11-22 11:12:21,489 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /tasks/1 HTTP/1.1" 200 -
+2026-11-22 11:12:21,491 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[33mGET /tasks/999 HTTP/1.1[0m" 404 -
+2026-11-22 11:12:21,493 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /tasks/search?q=bug HTTP/1.1" 200 -
+2026-11-22 11:12:21,494 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /tasks/search?status=pending&priority=1 HTTP/1.1" 200 -
+2026-11-22 11:12:21,495 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[31m[1mGET /tasks/search?priority=abc HTTP/1.1[0m" 400 -
+2026-11-22 11:12:21,497 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /tasks/stats HTTP/1.1" 200 -
+2026-11-22 11:12:21,505 INFO controllers.task_controller: Task criada: 11 - Nova tarefa teste
+2026-11-22 11:12:21,505 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[35m[1mPOST /tasks HTTP/1.1[0m" 201 -
+2026-11-22 11:12:21,506 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[31m[1mPOST /tasks HTTP/1.1[0m" 400 -
+2026-11-22 11:12:21,507 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[31m[1mPOST /tasks HTTP/1.1[0m" 400 -
+2026-11-22 11:12:21,510 INFO controllers.task_controller: Task atualizada: 11
+2026-11-22 11:12:21,511 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "PUT /tasks/11 HTTP/1.1" 200 -
+2026-11-22 11:12:21,514 INFO controllers.task_controller: Task deletada: 11
+2026-11-22 11:12:21,514 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "DELETE /tasks/11 HTTP/1.1" 200 -
+2026-11-22 11:12:21,516 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /users HTTP/1.1" 200 -
+2026-11-22 11:12:21,518 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /users/1 HTTP/1.1" 200 -
+2026-11-22 11:12:21,590 INFO controllers.user_controller: Usuário criado: 4
+2026-11-22 11:12:21,590 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-11-22 11:12:21,592 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[31m[1mPOST /users HTTP/1.1[0m" 401 -
+2026-11-22 11:12:21,593 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[31m[1mPOST /users HTTP/1.1[0m" 400 -
+2026-11-22 11:12:21,597 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "PUT /users/4 HTTP/1.1" 200 -
+2026-11-22 11:12:21,599 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /users/1/tasks HTTP/1.1" 200 -
+2026-11-22 11:12:21,664 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "POST /login HTTP/1.1" 200 -
+2026-11-22 11:12:21,731 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2026-11-22 11:12:21,737 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /reports/summary HTTP/1.1" 200 -
+2026-11-22 11:12:21,738 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /reports/user/1 HTTP/1.1" 200 -
+2026-11-22 11:12:21,740 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "GET /categories HTTP/1.1" 200 -
+2026-11-22 11:12:21,746 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "[35m[1mPOST /categories HTTP/1.1[0m" 201 -
+2026-11-22 11:12:21,750 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "PUT /categories/5 HTTP/1.1" 200 -
+2026-11-22 11:12:21,755 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "DELETE /categories/5 HTTP/1.1" 200 -
+2026-11-22 11:12:21,758 INFO controllers.user_controller: Usuário deletado: 4
+2026-11-22 11:12:21,758 INFO werkzeug: 127.0.0.1 - - [22/Nov/2026 11:12:21] "DELETE /users/4 HTTP/1.1" 200 -

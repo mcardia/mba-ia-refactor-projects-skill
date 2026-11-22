@@ -1,0 +1,72 @@
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5100
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /tasks HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /tasks/1 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[33mGET /tasks/999 HTTP/1.1[0m" 404 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /tasks/search?q=bug HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /tasks/search?status=pending&priority=1 HTTP/1.1" 200 -
+[2026-11-22 11:12:20,327] ERROR in app: Exception on /tasks/search [GET]
+Traceback (most recent call last):
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/tmp/baseline/task-manager-api/routes/task_routes.py", line 261, in search_tasks
+    tasks = tasks.filter(Task.priority == int(priority))
+                                          ~~~^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'abc'
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[35m[1mGET /tasks/search?priority=abc HTTP/1.1[0m" 500 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /tasks/stats HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[35m[1mPOST /tasks HTTP/1.1[0m" 201 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[31m[1mPOST /tasks HTTP/1.1[0m" 400 -
+[2026-11-22 11:12:20,348] ERROR in app: Exception on /tasks [POST]
+Traceback (most recent call last):
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/task-manager-api/.venv/lib64/python3.14/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/tmp/baseline/task-manager-api/routes/task_routes.py", line 113, in create_task
+    if priority < 1 or priority > 5:
+       ^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'str' and 'int'
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[35m[1mPOST /tasks HTTP/1.1[0m" 500 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "PUT /tasks/11 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "DELETE /tasks/11 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /users HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /users/1 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[31m[1mPOST /users HTTP/1.1[0m" 400 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "PUT /users/4 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /users/1/tasks HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /reports/summary HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /reports/user/1 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "GET /categories HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "[35m[1mPOST /categories HTTP/1.1[0m" 201 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "PUT /categories/5 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "DELETE /categories/5 HTTP/1.1" 200 -
+127.0.0.1 - - [22/Nov/2026 11:12:20] "DELETE /users/4 HTTP/1.1" 200 -

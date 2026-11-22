@@ -1,0 +1,10 @@
+
+> desafio-arquitetura-ia-boilerplate@1.0.0 start
+> node src/app.js
+
+2026-11-22T15:15:53.453Z [INFO] Frankenstein LMS rodando na porta 3100...
+2026-11-22T15:15:53.863Z [INFO] Processando pagamento { cardLast4: '4444', amount: 497, gatewayConfigured: false }
+2026-11-22T15:15:53.889Z [INFO] Checkout concluído { courseId: 2, enrollmentId: 2 }
+2026-11-22T15:15:53.892Z [INFO] Processando pagamento { cardLast4: '4444', amount: 997, gatewayConfigured: false }
+2026-11-22T15:15:53.893Z [INFO] Processando pagamento { cardLast4: '2222', amount: 497, gatewayConfigured: false }
+2026-11-22T15:15:53.894Z [INFO] Checkout concluído { courseId: 2, enrollmentId: 3 }
