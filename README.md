@@ -1,5 +1,7 @@
 # Criação de Skills — Refatoração Arquitetural Automatizada
 
+> **Entrega:** a documentação da solução (Análise Manual, Construção da Skill, Resultados e Como Executar) está em [`README-refactor-arch.md`](README-refactor-arch.md). Relatórios de auditoria em [`reports/`](reports), skill em `<projeto>/.claude/skills/refactor-arch/`, evidências das execuções em [`tmp/`](tmp).
+
 Ao longo do curso você aprendeu o que são Skills e como elas permitem que um agente de IA atue como um especialista em tarefas específicas. Agora imagine o seguinte cenário: você herdou 3 projetos legados com problemas de arquitetura, segurança e qualidade de código. Revisar e corrigir tudo manualmente levaria dias.
 
 Neste desafio, você vai criar uma Skill que automatiza esse processo — analisando, auditando e refatorando qualquer projeto para o padrão MVC, independente da tecnologia.
