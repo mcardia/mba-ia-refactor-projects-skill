@@ -1,0 +1,29 @@
+// Builds the per-course revenue report from a single joined query.
+const { PAYMENT_STATUS, UNKNOWN_STUDENT } = require('../config/constants');
+
+module.exports = function createFinancialReportService({ courseModel }) {
+    return {
+        async build() {
+            const rows = await courseModel.listWithEnrollmentsAndPayments();
+            const byCourse = new Map();
+
+            for (const row of rows) {
+                if (!byCourse.has(row.course_id)) {
+                    byCourse.set(row.course_id, { course: row.course_title, revenue: 0, students: [] });
+                }
+                if (row.enrollment_id === null) continue;
+
+                const entry = byCourse.get(row.course_id);
+                if (row.payment_status === PAYMENT_STATUS.PAID) {
+                    entry.revenue += row.payment_amount;
+                }
+                entry.students.push({
+                    student: row.student_name ?? UNKNOWN_STUDENT,
+                    paid: row.payment_amount ?? 0,
+                });
+            }
+
+            return [...byCourse.values()];
+        },
+    };
+};
