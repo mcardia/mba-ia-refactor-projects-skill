@@ -2,7 +2,7 @@
 # Thin orchestration: start a server, replay a spec against it, stop it.
 # usage: serve-and-smoke.sh <dir> <spec.json> <out.json> <port> -- <command> [args...]
 set -u
-tools=/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill/tmp
+tools="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 dir="$1"; spec="$2"; out="$3"; port="$4"; shift 5
 cd "$dir" || exit 1
 "$@" > "$out.log" 2>&1 &

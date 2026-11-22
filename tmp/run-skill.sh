@@ -2,7 +2,7 @@
 # Thin orchestration: run the refactor-arch skill through the real Claude Code CLI inside a project.
 # usage: run-skill.sh <project-dir> <log-name> <prompt> <readonly|edit> [continue]
 set -u
-repo=/home/mario/Documentos/MBA/mba-ia-refactor-projects-skill
+repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 proj="$1"; name="$2"; prompt="$3"; mode="$4"; cont="${5:-}"
 
 read_tools='Read Grep Glob Bash(wc:*) Bash(ls:*) Bash(find:*) Bash(cat:*) Bash(head:*) Bash(tail:*) Bash(grep:*) Bash(nl:*)'
