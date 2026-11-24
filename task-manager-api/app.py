@@ -1,46 +1,40 @@
-"""Entry point / composition root: builds the Flask app and starts the server."""
+"""Entry point / composition root. Run with: python app.py"""
 import logging
-from datetime import datetime
 
 from flask import Flask
 from flask_cors import CORS
 
-import models  # noqa: F401  (registers the ORM models before create_all)
 from config.settings import Settings
 from database import db
 from middlewares.error_handler import register_error_handlers
-from routes.category_routes import category_bp
-from routes.report_routes import report_bp
-from routes.task_routes import task_bp
-from routes.user_routes import user_bp
+from routes import register_routes
+
+logger = logging.getLogger(__name__)
 
 
 def create_app(settings=Settings):
+    logging.basicConfig(level=settings.LOG_LEVEL,
+                        format='%(asctime)s %(levelname)s %(name)s: %(message)s')
+
     app = Flask(__name__)
     app.config.from_object(settings)
+    if not settings.SECRET_KEY_FROM_ENV:
+        logger.warning('SECRET_KEY not set: using a random key; login tokens expire on restart')
 
     if settings.CORS_ORIGINS:
         CORS(app, origins=settings.CORS_ORIGINS)
+
     db.init_app(app)
     register_error_handlers(app)
-
-    for blueprint in (task_bp, user_bp, report_bp, category_bp):
-        app.register_blueprint(blueprint)
-
-    @app.route('/health')
-    def health():
-        return {'status': 'ok', 'timestamp': str(datetime.now())}
-
-    @app.route('/')
-    def index():
-        return {'message': 'Task Manager API', 'version': '1.0'}
+    register_routes(app)
 
     with app.app_context():
+        import models  # noqa: F401  (registers every model before create_all)
         db.create_all()
+
     return app
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
 app = create_app()
 
 if __name__ == '__main__':

@@ -1,21 +1,19 @@
-"""Response shaping for the HTTP layer (one function per payload shape)."""
-from utils.time import utc_now
+"""Response shapes. Each route keeps the exact payload it had before the refactoring."""
 
-
-def task_detail(task, now=None):
+def task_with_overdue(task, now=None):
     data = task.to_dict()
     data['overdue'] = task.is_overdue(now)
     return data
 
 
 def task_list_item(task, now=None):
-    data = task_detail(task, now)
+    data = task_with_overdue(task, now)
     data['user_name'] = task.user.name if task.user else None
     data['category_name'] = task.category.name if task.category else None
     return data
 
 
-def user_task_item(task, now=None):
+def user_task_summary(task, now=None):
     return {
         'id': task.id,
         'title': task.title,
@@ -28,12 +26,7 @@ def user_task_item(task, now=None):
     }
 
 
-def task_list(tasks):
-    now = utc_now()
-    return [task_list_item(task, now) for task in tasks]
-
-
-def user_with_task_count(user, task_count):
+def user_list_item(user, task_count):
     data = user.to_dict()
     data['task_count'] = task_count
     return data
@@ -45,7 +38,11 @@ def user_detail(user, tasks):
     return data
 
 
-def category_with_task_count(category, task_count):
+def category_list_item(category, task_count):
     data = category.to_dict()
     data['task_count'] = task_count
     return data
+
+
+def login_payload(user, token):
+    return {'message': 'Login realizado com sucesso', 'user': user.to_dict(), 'token': token}

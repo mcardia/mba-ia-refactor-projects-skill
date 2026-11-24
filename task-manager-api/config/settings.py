@@ -1,4 +1,4 @@
-"""Application settings, read from environment variables (and an optional .env file)."""
+"""Application settings, read from environment variables (a local .env file is loaded if present)."""
 import os
 import secrets
 
@@ -7,22 +7,32 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def _csv(value):
+def _env_bool(name, default=False):
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+def _env_list(name):
+    value = os.environ.get(name, '')
     return [item.strip() for item in value.split(',') if item.strip()]
 
 
 class Settings:
-    # Random per boot when unset: issued tokens stop being valid after a restart.
+    # A random key per boot when SECRET_KEY is unset: safe default, but issued tokens die on restart.
     SECRET_KEY = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
+    SECRET_KEY_FROM_ENV = bool(os.environ.get('SECRET_KEY'))
+
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///tasks.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    DEBUG = os.environ.get('APP_DEBUG', '0') == '1'
+    DEBUG = _env_bool('APP_DEBUG', False)
     HOST = os.environ.get('APP_HOST', '127.0.0.1')
     PORT = int(os.environ.get('APP_PORT', '5000'))
 
-    # Empty list => no cross-origin access is granted.
-    CORS_ORIGINS = _csv(os.environ.get('CORS_ORIGINS', ''))
+    # Comma-separated list of allowed browser origins; empty disables CORS headers entirely.
+    CORS_ORIGINS = _env_list('CORS_ORIGINS')
 
-    # Empty => privileged endpoints are disabled (403).
-    ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', '')
+    TOKEN_MAX_AGE_SECONDS = int(os.environ.get('TOKEN_MAX_AGE_SECONDS', '3600'))
+    LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()

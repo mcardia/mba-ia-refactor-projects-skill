@@ -1,4 +1,4 @@
-"""Domain exceptions, mapped to HTTP responses by middlewares/error_handler.py."""
+"""Domain exceptions; the central error handler maps them to the JSON envelope {'error': message}."""
 
 
 class AppError(Exception):

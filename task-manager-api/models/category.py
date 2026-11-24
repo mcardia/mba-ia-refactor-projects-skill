@@ -1,9 +1,9 @@
 from config.constants import DEFAULT_COLOR
-from database import PersistenceMixin, db
+from database import commit, db
 from utils.time import utc_now
 
 
-class Category(PersistenceMixin, db.Model):
+class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -22,7 +22,27 @@ class Category(PersistenceMixin, db.Model):
         }
 
     @classmethod
-    def find(cls, category_id):
+    def create(cls, name, description, color):
+        category = cls(name=name, description=description, color=color)
+        db.session.add(category)
+        commit('Erro ao criar categoria')
+        return category
+
+    def update(self, fields):
+        for name, value in fields.items():
+            setattr(self, name, value)
+        commit('Erro ao atualizar')
+        return self
+
+    def delete_detaching_tasks(self):
+        """Delete the category and, in the same transaction, unlink its tasks (no orphan ids)."""
+        for task in list(self.tasks):
+            task.category_id = None
+        db.session.delete(self)
+        commit('Erro ao deletar')
+
+    @classmethod
+    def get_by_id(cls, category_id):
         return db.session.get(cls, category_id)
 
     @classmethod

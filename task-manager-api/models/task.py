@@ -1,12 +1,12 @@
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from sqlalchemy.orm import selectinload
 
 from config.constants import CLOSED_STATUSES, DEFAULT_PRIORITY, STATUS_DONE, STATUS_PENDING
-from database import PersistenceMixin, db
+from database import commit, db
 from utils.time import utc_now
 
 
-class Task(PersistenceMixin, db.Model):
+class Task(db.Model):
     __tablename__ = 'tasks'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -24,7 +24,11 @@ class Task(PersistenceMixin, db.Model):
     user = db.relationship('User', backref='tasks')
     category = db.relationship('Category', backref='tasks')
 
-    # ----- entity rules -------------------------------------------------
+    # ---- domain rules -------------------------------------------------------------------
+    def is_overdue(self, now=None):
+        now = now or utc_now()
+        return bool(self.due_date and self.due_date < now and self.status not in CLOSED_STATUSES)
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -40,24 +44,28 @@ class Task(PersistenceMixin, db.Model):
             'tags': self.tags.split(',') if self.tags else [],
         }
 
-    def is_overdue(self, now=None):
-        now = now or utc_now()
-        return bool(self.due_date and self.due_date < now and self.status not in CLOSED_STATUSES)
-
-    def days_overdue(self, now=None):
-        now = now or utc_now()
-        return (now - self.due_date).days
-
-    def touch(self):
-        self.updated_at = utc_now()
-
-    @staticmethod
-    def tags_to_column(tags):
-        return ','.join(tags) if isinstance(tags, list) else tags
-
-    # ----- queries ------------------------------------------------------
+    # ---- persistence --------------------------------------------------------------------
     @classmethod
-    def find(cls, task_id):
+    def create(cls, **fields):
+        task = cls(**fields)
+        db.session.add(task)
+        commit('Erro ao criar task')
+        return task
+
+    def update(self, fields):
+        for name, value in fields.items():
+            setattr(self, name, value)
+        self.updated_at = utc_now()
+        commit('Erro ao atualizar')
+        return self
+
+    def delete(self):
+        db.session.delete(self)
+        commit('Erro ao deletar')
+
+    # ---- queries ------------------------------------------------------------------------
+    @classmethod
+    def get_by_id(cls, task_id):
         return db.session.get(cls, task_id)
 
     @classmethod
@@ -72,8 +80,8 @@ class Task(PersistenceMixin, db.Model):
     def search(cls, text=None, status=None, priority=None, user_id=None):
         query = cls.query
         if text:
-            pattern = f'%{text}%'
-            query = query.filter(db.or_(cls.title.like(pattern), cls.description.like(pattern)))
+            pattern = f'%{text}%'  # bound as a parameter by SQLAlchemy
+            query = query.filter(or_(cls.title.like(pattern), cls.description.like(pattern)))
         if status:
             query = query.filter(cls.status == status)
         if priority is not None:
@@ -87,44 +95,52 @@ class Task(PersistenceMixin, db.Model):
         return cls.query.count()
 
     @classmethod
-    def count_by(cls, column):
-        """{value: count} for one column, in a single GROUP BY query."""
-        rows = db.session.query(column, func.count(cls.id)).group_by(column).all()
-        return {value: count for value, count in rows}
+    def _count_grouped(cls, *columns):
+        rows = db.session.query(*columns, func.count(cls.id)).group_by(*columns).all()
+        if len(columns) == 1:
+            return {row[0]: row[1] for row in rows}
+        return {tuple(row[:-1]): row[-1] for row in rows}
 
     @classmethod
     def count_by_status(cls):
-        return cls.count_by(cls.status)
+        return cls._count_grouped(cls.status)
 
     @classmethod
     def count_by_priority(cls):
-        return cls.count_by(cls.priority)
+        return cls._count_grouped(cls.priority)
 
     @classmethod
     def count_by_user(cls):
-        return cls.count_by(cls.user_id)
+        return cls._count_grouped(cls.user_id)
 
     @classmethod
     def count_by_category(cls):
-        return cls.count_by(cls.category_id)
+        return cls._count_grouped(cls.category_id)
 
     @classmethod
-    def count_done_by_user(cls):
-        rows = (db.session.query(cls.user_id, func.count(cls.id))
-                .filter(cls.status == STATUS_DONE).group_by(cls.user_id).all())
-        return {user_id: count for user_id, count in rows}
+    def count_by_user_and_status(cls):
+        return cls._count_grouped(cls.user_id, cls.status)
+
+    @classmethod
+    def _overdue_query(cls, now):
+        return cls.query.filter(
+            cls.due_date.isnot(None),
+            cls.due_date < now,
+            or_(cls.status.is_(None), cls.status.notin_(CLOSED_STATUSES)),
+        )
 
     @classmethod
     def list_overdue(cls, now):
-        return (cls.query
-                .filter(cls.due_date.isnot(None), cls.due_date < now,
-                        cls.status.notin_(CLOSED_STATUSES))
-                .order_by(cls.id).all())
+        return cls._overdue_query(now).order_by(cls.id).all()
+
+    @classmethod
+    def count_overdue(cls, now):
+        return cls._overdue_query(now).count()
 
     @classmethod
     def count_created_since(cls, since):
         return cls.query.filter(cls.created_at >= since).count()
 
     @classmethod
-    def count_done_since(cls, since):
+    def count_completed_since(cls, since):
         return cls.query.filter(cls.status == STATUS_DONE, cls.updated_at >= since).count()
