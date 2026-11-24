@@ -104,11 +104,17 @@ run command and default port; seed data and credentials needed to try the app.
 **Allowed, and always listed under "Behavior changes"** (each one removes a flaw from the audit):
 
 1. Secrets, password hashes and card data removed from responses and logs.
-2. Privileged/destructive endpoints now require the admin guard (they still respond: 401/403).
-   Guard only the routes the audit lists under AP-04 (destructive operations, raw SQL, role
-   changes). Routes that were open reads or ordinary writes stay open; report that as residual
-   risk. Never introduce login enforcement, Bearer authentication, sessions or per-user ownership
-   checks: that builds an auth system, which is out of scope and breaks the contract.
+2. Privileged/destructive endpoints are now guarded (they still respond: 401/403). Guard only the
+   routes the audit lists under AP-04 (destructive operations, raw SQL, role changes). Routes that
+   were open reads or ordinary writes stay open; report that as residual risk. The mechanism
+   depends on what the project already has:
+   - **The project has a login that issues a token**: the guard validates that token (signature
+     and expiry) and requires the **role of the authenticated user** (for example `admin`), read
+     from the database, never from the client (T-04, session variant). Missing or invalid token:
+     401; valid token without the role: 403.
+   - **The project has no login**: the admin-token header guard of T-04.
+   Never go beyond that: no login enforcement on routes outside the AP-04 list, no registration
+   flows, refresh tokens, sessions or per-user ownership checks. That would be a new auth system.
 3. Password storage moves to a salted hash; seed users keep working with the same plaintext
    credentials.
 4. Issued tokens become signed instead of guessable.

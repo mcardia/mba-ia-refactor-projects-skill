@@ -160,8 +160,10 @@ logger.info('Processing payment', { cardLast4: card.slice(-4) });   // never the
 ## T-04 Protect privileged and destructive endpoints
 **Fixes**: AP-04.
 **Scope**: guard only the routes the audit names under AP-04. A route that was an open read or an
-ordinary write stays open (reported as residual risk), and the guard is the admin-token header
-below, never the login token.
+ordinary write stays open (reported as residual risk). Pick the guard by what the project has:
+if it already has a login that issues a token, use the **session variant** at the end of this
+section (validate the token, require the user's role); if it has no login, use the admin-token
+header guard below.
 **Steps**: list admin/destructive/privileged routes; put a guard in front of each (middleware or
 decorator) that checks an admin token from configuration; if the token is not configured the
 endpoint is disabled (403). Never let a client set its own `role`. An endpoint that runs
@@ -207,6 +209,72 @@ module.exports = (config) => (req, res, next) => {
   const expected = Buffer.from(config.adminToken);
   if (supplied.length !== expected.length || !crypto.timingSafeEqual(supplied, expected))
     return next(new HttpError(401, 'Admin token required'));
+  next();
+};
+```
+
+### T-04, session variant: the project already has a login
+Use this when the project exposes a login that issues a token (after T-03 the token is signed and
+expires). The guard must check **both** the session and the role; a fixed shared header is not
+enough here because it never looks at who is calling.
+
+Steps: (1) issue the token at login with the same signer the guard verifies, with an expiry
+(configurable); (2) the guard reads `Authorization: Bearer <token>`, verifies signature and expiry,
+reloads the user from the database, rejects missing, invalid, expired or inactive users with 401,
+and rejects a valid user without the required role with 403; (3) the role and the active flag come
+from the database, never from the token payload or the request; (4) apply the guard only to the
+AP-04 routes, plus every operation that creates or promotes a user to a privileged role (creating a
+user with the default role stays anonymous); (5) keep the seed's admin user able to log in so the
+guarded routes can be exercised; (6) report the routes that stayed open as residual risk.
+
+```python
+# middlewares/auth.py
+from functools import wraps
+from flask import current_app, request
+from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
+
+def _signer():
+    return URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+
+def issue_token(user):                       # called by the login controller
+    return _signer().dumps({"uid": user.id})
+
+def current_user():
+    header = request.headers.get("Authorization", "")
+    if not header.startswith("Bearer "):
+        raise UnauthorizedError("Authentication token required")
+    try:
+        claims = _signer().loads(header[len("Bearer "):],
+                                 max_age=current_app.config["TOKEN_MAX_AGE_SECONDS"])
+    except (BadSignature, SignatureExpired):
+        raise UnauthorizedError("Invalid or expired token")
+    user = User.get_by_id(claims["uid"])     # role and active flag come from the database
+    if user is None or not user.active:
+        raise UnauthorizedError("Invalid or expired token")
+    return user
+
+def require_role(role):
+    def decorator(view):
+        @wraps(view)
+        def wrapper(*args, **kwargs):
+            if current_user().role != role:
+                raise ForbiddenError("Role required: " + role)
+            return view(*args, **kwargs)
+        return wrapper
+    return decorator
+
+# routes: @require_role("admin") on the AP-04 routes only
+```
+Node, same idea (the token service is injected; it checks signature and expiry):
+```js
+module.exports = ({ tokenService, userModel }) => (role) => async (req, res, next) => {
+  const [scheme, token] = (req.get('Authorization') || '').split(' ');
+  if (scheme !== 'Bearer' || !token) return next(new HttpError(401, 'Authentication token required'));
+  const claims = tokenService.verify(token);
+  const user = claims && await userModel.findById(claims.uid);
+  if (!user || !user.active) return next(new HttpError(401, 'Invalid or expired token'));
+  if (user.role !== role) return next(new HttpError(403, 'Role required: ' + role));
+  req.user = user;
   next();
 };
 ```

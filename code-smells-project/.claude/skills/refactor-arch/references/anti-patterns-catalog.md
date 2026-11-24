@@ -56,9 +56,10 @@ otherwise the lower one, and say why in the finding.
 - **Signals**: paths containing `admin`, `reset`, `query`, `debug`, `drop`; handlers that call
   `execute(request...)` with client-supplied SQL; `DELETE`/`PUT` handlers with no guard decorator or
   middleware; a client-controlled `role` field accepted on update; no auth middleware anywhere in the
-  project.
+  project; a login endpoint that issues a token or a `role` column that no route ever verifies.
 - **Why**: any anonymous caller can wipe or read the whole database or escalate privileges.
-- **Fix**: T-04.
+- **Fix**: T-04. In the recommendation, name the guard that fits: validate the login token and the
+  user's role when the project already has a login, the admin-token header when it has none.
 
 ### AP-05 God class / God module
 - **What**: one class or file that owns several unrelated responsibilities (routing, validation,
