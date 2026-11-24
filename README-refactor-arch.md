@@ -174,17 +174,22 @@ targets.
 
 ### Challenges and how they were solved
 
-- **The model over-reached in Phase 3, twice, and the skill was tightened each time.** In the first
-  run of project 1 it also rejected input that silently corrupted data (negative quantities, orders
-  for missing users); the contract did not name that class of change, so I clarified items 6 and 7
-  of the allow-list. In a later run of project 3 it built a Bearer-token authentication system and
-  required login on `GET /reports/summary` and `PUT /users/<id>`, which were open routes. The
-  playbook already said not to invent an auth system, so I made the rule explicit in
-  `mvc-guidelines.md` (section 5, item 2) and `T-04`: guard only the routes the audit lists under
-  AP-04, with the admin-token header, and report the rest as residual risk. After each change I
-  re-ran from the original code. Earlier attempts are kept: `tmp/p1-run1/` and `tmp/p1-phase*.jsonl`
-  (first), `tmp/p1b-*`, `tmp/p2-*`, `tmp/p3-*` (second generation) and `tmp/attempt-2/` with
-  `tmp/p?f-*` (the run with the Bearer authentication).
+- **The guard has to match what the project already has.** In the first run of project 1 the model
+  also rejected input that silently corrupted data (negative quantities, orders for missing users);
+  I clarified items 6 and 7 of the allow-list. In a run of project 3 it built Bearer authentication
+  and also required login on `GET /reports/summary` and `PUT /users/<id>`, which were open routes,
+  so I forbade login enforcement altogether. That overcorrected: the next run of project 3 guarded
+  the destructive routes with a fixed `X-Admin-Token` and ignored the login the project already has.
+  The audit itself recommended validating the signed login token and the user's role, but the
+  playbook had no pattern for it. `T-04` now has a **session variant**: when the project issues a
+  login token, the guard verifies the token (signature and expiry), reloads the user from the
+  database and checks the role (401 without a valid session, 403 without the role); the
+  admin-token header stays for projects that have no login. The scope rule is unchanged: only the
+  routes the audit lists under AP-04 are guarded, and no new auth features (registration, refresh
+  tokens, ownership checks) are built. After each change I re-ran from the original code. Earlier
+  attempts are kept: `tmp/p1-run1/` and `tmp/p1-phase*.jsonl` (first), `tmp/p1b-*`, `tmp/p2-*`,
+  `tmp/p3-*` (second), `tmp/attempt-2/` with `tmp/p?f-*` (Bearer authentication on open routes) and
+  `tmp/p?g-*` (the shared admin header).
 - **Examples that mirrored the targets.** The playbook examples reused names and domains of the
   three projects. I neutralized them and re-ran all three projects so that one frozen skill produced
   every final result.
@@ -212,7 +217,7 @@ targets.
 
 All three projects were run through the real CLI (`claude -p "/refactor-arch"`, then
 `claude -p --continue "y"`) with Claude Code 2.1.319 and model `claude-opus-5-5`. Transcripts are in
-`tmp/*.jsonl`; the files named `p1g-*`, `p2g-*` and `p3g-*` are the final runs, the ones whose
+`tmp/*.jsonl`; the files named `p1g-*`, `p2g-*` and `p3h-*` are the final runs, the ones whose
 results are reported here.
 
 ### Audit summary
@@ -221,7 +226,7 @@ results are reported here.
 |---|---|---|---|---|---|---|
 | 1 — code-smells-project | 5 | 6 | 5 | 4 | 20 | 19 of 20 (AP-04 partial) |
 | 2 — ecommerce-api-legacy | 4 | 6 | 4 | 4 | 18 | 18 of 18 (residual: no auth system, simulated gateway) |
-| 3 — task-manager-api | 3 | 5 | 6 | 4 | 18 | 16 of 18 (AP-03, AP-04 partial) |
+| 3 — task-manager-api | 4 | 4 | 7 | 4 | 19 | 15 of 19 (AP-03, AP-04, AP-18 partial; AP-10 reported as a false positive) |
 
 Full reports: [`reports/audit-project-1.md`](reports/audit-project-1.md),
 [`reports/audit-project-2.md`](reports/audit-project-2.md),
@@ -273,11 +278,11 @@ before                          after
 ├── database.py                 ├── database.py              # kept: db instance, FK enforcement
 ├── seed.py                     ├── seed.py                  # kept, hashed passwords
 ├── models/ {task,user,category}├── models/                  # kept, now own queries and rules
-├── routes/ (fat routes)        ├── routes/ {task,user,category,report}_routes.py + serializers.py  # thin: URL -> controller
+├── routes/ (fat routes)        ├── routes/ {task,user,category,report,system}_routes.py + serializers.py  # thin: URL -> controller
 ├── services/notification (dead)├── services/report_service.py
 ├── utils/helpers.py (dead)     ├── config/ {settings,constants}.py   # new
                                 ├── controllers/ {task,user,category,report}_controller.py + validators.py  # new
-                                ├── middlewares/ {error_handler,auth}.py   # new
+                                ├── middlewares/ {error_handler,auth}.py   # new; auth = signed token + role guard
                                 ├── utils/ {errors,time}.py
                                 └── .env.example, requirements.txt (2 unused deps dropped)
 ```
@@ -296,7 +301,7 @@ before/after smoke test described in the next subsection.
 | **Phase 2** follows the template | [x] | [x] | [x] |
 | findings have file and exact lines | [x] spot-checked against the code | [x] spot-checked | [x] spot-checked |
 | ordered CRITICAL to LOW | [x] | [x] | [x] |
-| at least 5 findings | [x] 20 | [x] 18 | [x] 18 |
+| at least 5 findings | [x] 20 | [x] 18 | [x] 19 |
 | at least 1 CRITICAL or HIGH | [x] 11 | [x] 10 | [x] 8 |
 | deprecated-API detection included | [x] none applicable | [x] none applicable | [x] 2 findings |
 | pauses and asks before Phase 3 | [x] | [x] | [x] |
@@ -330,7 +335,14 @@ code and top-level JSON keys. The skill did the same on its own; these are my in
 |---|---|---|---|---|
 | 1 | 28 | 21 | 7 | 0 |
 | 2 | 10 | 5 | 5 | 0 |
-| 3 | 30 | 24 | 6 | 0 |
+| 3 | 30 | 18 | 12 | 0 |
+
+The project 3 request list still sends the old `X-Admin-Token` header, which the session guard no
+longer accepts, so its guarded steps answer 401 by design. The guard itself is covered by a separate
+check, `tmp/auth-check-p3.py` (21 of 21 checks pass, output in `tmp/p3h-auth-check.txt`): anonymous,
+fake, tampered and deactivated-user tokens get 401; a valid token without the admin role gets 403;
+an admin token works; creating or promoting an admin needs an admin session; routes outside the
+audit's list stay open.
 
 Every difference is an intended change from the allow-list:
 
@@ -338,12 +350,14 @@ Every difference is an intended change from the allow-list:
   `"sucesso": false`; the anonymous `/admin/query` and `/admin/reset-db` now answer 403.
 - project 2: error bodies are JSON `{"error": ...}` instead of plain text; the anonymous admin report
   and user delete answer 401 (403 if no token is configured).
-- project 3: `password` is gone from user payloads; a non-numeric `priority` answers 400 instead of
-  500; creating an `admin` user anonymously answers 401.
+- project 3: `password` is gone from user payloads (3 steps); a non-numeric `priority` answers 400
+  instead of 500 (2 steps); creating an `admin` user anonymously answers 401; the deletes and the two
+  report routes now need a Bearer token of an admin user (5 steps); `GET /users/1/tasks` returns one
+  more task only because the guarded delete of that task no longer ran.
 
 Success payloads are identical everywhere. Files: `tmp/spec-p*.json` (requests),
 `tmp/p1-before.json`, `tmp/p2-before.json`, `tmp/p3-before.json` (original code) and
-`tmp/p1g-after.json`, `tmp/p2g-after.json`, `tmp/p3g-after.json` (final refactors), plus the matching
+`tmp/p1g-after.json`, `tmp/p2g-after.json`, `tmp/p3h-after.json` (final refactors), plus the matching
 `*.json.log` server logs.
 
 ### Applications running after the refactoring
@@ -361,7 +375,7 @@ INFO __main__: Servidor iniciado em http://127.0.0.1:5000
 [INFO] Processando pagamento { cardLast4: '4444', amount: 497, gatewayConfigured: false }
 [INFO] Checkout concluído { courseId: 2, enrollmentId: 2 }
 
-# project 3 (tmp/p3g-after.json.log)
+# project 3 (tmp/p3h-after.json.log)
  * Debug mode: off  * Running on http://127.0.0.1:5100
 INFO controllers.task_controller: Task criada: 11
 ```
@@ -379,7 +393,7 @@ Reported by the CLI for the final runs (`tmp/*.jsonl`).
 |---|---|---|
 | 1 | 15 turns, 95 s, USD 0.59 | 85 turns, 503 s, USD 3.62 |
 | 2 | 16 turns, 78 s, USD 0.50 | 78 turns, 292 s, USD 2.33 |
-| 3 | 27 turns, 150 s, USD 0.88 | 93 turns, 500 s, USD 4.22 |
+| 3 | 32 turns, 135 s, USD 0.85 | 97 turns, 534 s, USD 4.11 |
 
 ### Observations by stack
 
@@ -392,28 +406,38 @@ Reported by the CLI for the final runs (`tmp/*.jsonl`).
 - **Partially layered Flask project (project 3).** The skill did not rename what was fine: `models/`,
   `routes/`, `database.py` and `seed.py` stayed. It added the missing layers (`controllers/`,
   `config/`, `middlewares/`), slimmed the routes to routing only, and removed the dead helpers, the
-  unused `NotificationService` and two unused dependencies. It reported two findings as only
-  partially resolved instead of claiming a clean result: project 3 still has no real authentication
-  (only destructive routes and role changes require the admin token), and the 4-character minimum
-  password and the seed passwords were kept by the behavior contract.
+  unused `NotificationService` and two unused dependencies. Because this project already had a
+  login, the skill signed and expired the login token and guarded the audited routes (deletes, role
+  changes, the two reports) with a guard that verifies the token and requires the admin role of the
+  user, read from the database. It did not touch the open routes. It also reported what stayed
+  partial instead of claiming a clean result: ordinary writes (including `PUT /users/<id>` for name,
+  email and password) remain anonymous because fixing that needs per-user ownership checks, which is
+  a new auth feature; the 4-character minimum password and the seed passwords were kept by the
+  behavior contract; and the three task payload shapes were kept as they were. It also tested the
+  AP-10 claim against the original code and reported it as a false positive.
 - **Both audits and refactors were consistent across stacks.** Same report format, same severity
   logic, same validation procedure. What changed was the detected idiom (callbacks versus ORM, plain
   SQL versus SQLAlchemy), not the procedure.
 
 ### Provenance and known limits
 
-- **One frozen skill.** All final results (`p1g-*`, `p2g-*`, `p3g-*`) come from the skill in the first
-  commit `feat: add refactor-arch skill`, run from the original code of each project. The three
-  skill folders are byte-identical (`diff -r`). Earlier generations are kept as evidence in `tmp/`
-  and are not used for the numbers above.
+- **Skill versions.** Projects 1 and 2 (`p1g-*`, `p2g-*`) ran with the skill of the commit
+  `feat: add refactor-arch skill`. Project 3 (`p3h-*`) ran with the following commit, `fix(skill):
+  validate session and role when the project already has a login`, which only changes the guard
+  rule (`T-04`, section 5 of `mvc-guidelines.md`, the AP-04 catalog entry). That rule does not alter
+  the outcome of projects 1 and 2: the first has a login that returns user data but issues no token,
+  the second has no login, so both keep the admin-token header guard. I did not re-run them. The
+  three skill folders are byte-identical in the final tree (`diff -r`). Earlier generations are kept
+  as evidence in `tmp/` and are not used for the numbers above.
 - **Baselines, taken before any edit.** The agents kept their scratch copies of the original in
   `tmp/p1-original/`, `tmp/p2-original/` and `tmp/cs-orig-p3/`. In the first generation, project 3
   removed its own scratch directories with a `cleanup.py` (visible in `tmp/p3-phase3.jsonl`). The
   original code of every project is also in the first commit of the repository, and my replays use a
   copy extracted from it (`tmp/baseline/`).
-- Residual risks the skill reported and left open: none of the three projects has a real
-  authentication system (only a minimal admin token was added), and the skill was not tested on
-  stacks other than Flask and Express.
+- Residual risks the skill reported and left open: projects 1 and 2 have no real authentication
+  system (only the minimal admin token was added), project 3 still lets anonymous callers change
+  other users' name, email and password, and the skill was not tested on stacks other than Flask
+  and Express.
 
 ---
 
@@ -471,7 +495,8 @@ cd code-smells-project && ADMIN_TOKEN=secret .venv/bin/python app.py          # 
 cd ecommerce-api-legacy && ADMIN_TOKEN=secret npm start                       # http://127.0.0.1:3000
 
 # project 3 (seed first)
-cd task-manager-api && .venv/bin/python seed.py && ADMIN_TOKEN=secret .venv/bin/python app.py   # http://127.0.0.1:5000
+cd task-manager-api && .venv/bin/python seed.py && .venv/bin/python app.py   # http://127.0.0.1:5000
+# guarded routes need the Bearer token of an admin user: POST /login with joao@email.com / 1234
 ```
 
 Quick manual checks:
