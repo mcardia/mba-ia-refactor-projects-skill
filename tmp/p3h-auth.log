@@ -1,0 +1,36 @@
+2026-11-24 19:51:34,228 WARNING __main__: SECRET_KEY not set: using a random key; login tokens expire on restart
+ * Serving Flask app 'app'
+ * Debug mode: off
+2026-11-24 19:51:34,261 INFO werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5100
+2026-11-24 19:51:34,261 INFO werkzeug: [33mPress CTRL+C to quit[0m
+2026-11-24 19:51:34,482 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "GET / HTTP/1.1" 200 -
+2026-11-24 19:51:34,609 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "POST /login HTTP/1.1" 200 -
+2026-11-24 19:51:34,721 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "POST /login HTTP/1.1" 200 -
+2026-11-24 19:51:34,722 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mDELETE /tasks/1 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:34,723 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mDELETE /tasks/1 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:34,725 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mDELETE /tasks/1 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:34,728 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mDELETE /tasks/1 HTTP/1.1[0m" 403 -
+2026-11-24 19:51:34,737 INFO controllers.task_controller: Task deletada: 1
+2026-11-24 19:51:34,737 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "DELETE /tasks/1 HTTP/1.1" 200 -
+2026-11-24 19:51:34,740 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mPOST /users HTTP/1.1[0m" 401 -
+2026-11-24 19:51:34,743 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mPOST /users HTTP/1.1[0m" 403 -
+2026-11-24 19:51:34,814 INFO controllers.user_controller: Usuário criado: 4
+2026-11-24 19:51:34,814 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-11-24 19:51:34,944 INFO controllers.user_controller: Usuário criado: 5
+2026-11-24 19:51:34,944 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-11-24 19:51:34,947 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mPUT /users/2 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:34,951 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mPUT /users/2 HTTP/1.1[0m" 403 -
+2026-11-24 19:51:34,952 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mGET /reports/summary HTTP/1.1[0m" 401 -
+2026-11-24 19:51:34,963 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "GET /reports/summary HTTP/1.1" 200 -
+2026-11-24 19:51:34,965 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[31m[1mDELETE /categories/1 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:34,978 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "DELETE /categories/1 HTTP/1.1" 200 -
+2026-11-24 19:51:34,983 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "GET /tasks HTTP/1.1" 200 -
+2026-11-24 19:51:34,988 INFO controllers.task_controller: Task criada: 11
+2026-11-24 19:51:34,988 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:34] "[35m[1mPOST /tasks HTTP/1.1[0m" 201 -
+2026-11-24 19:51:35,093 INFO controllers.user_controller: Usuário criado: 6
+2026-11-24 19:51:35,093 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:35] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-11-24 19:51:35,183 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:35] "POST /login HTTP/1.1" 200 -
+2026-11-24 19:51:35,187 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:35] "[31m[1mDELETE /tasks/2 HTTP/1.1[0m" 403 -
+2026-11-24 19:51:35,193 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:35] "PUT /users/6 HTTP/1.1" 200 -
+2026-11-24 19:51:35,195 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:35] "[31m[1mDELETE /tasks/2 HTTP/1.1[0m" 401 -

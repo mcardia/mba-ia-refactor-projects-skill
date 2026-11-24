@@ -1,0 +1,40 @@
+2026-11-24 19:51:43,947 WARNING __main__: SECRET_KEY not set: using a random key; login tokens expire on restart
+ * Serving Flask app 'app'
+ * Debug mode: off
+2026-11-24 19:51:43,975 INFO werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5100
+2026-11-24 19:51:43,975 INFO werkzeug: [33mPress CTRL+C to quit[0m
+2026-11-24 19:51:44,184 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET / HTTP/1.1" 200 -
+2026-11-24 19:51:44,226 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET / HTTP/1.1" 200 -
+2026-11-24 19:51:44,228 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /health HTTP/1.1" 200 -
+2026-11-24 19:51:44,241 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /tasks HTTP/1.1" 200 -
+2026-11-24 19:51:44,247 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /tasks/1 HTTP/1.1" 200 -
+2026-11-24 19:51:44,250 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[33mGET /tasks/999 HTTP/1.1[0m" 404 -
+2026-11-24 19:51:44,252 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /tasks/search?q=bug HTTP/1.1" 200 -
+2026-11-24 19:51:44,255 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /tasks/search?status=pending&priority=1 HTTP/1.1" 200 -
+2026-11-24 19:51:44,259 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mGET /tasks/search?priority=abc HTTP/1.1[0m" 400 -
+2026-11-24 19:51:44,266 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /tasks/stats HTTP/1.1" 200 -
+2026-11-24 19:51:44,276 INFO controllers.task_controller: Task criada: 11
+2026-11-24 19:51:44,277 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[35m[1mPOST /tasks HTTP/1.1[0m" 201 -
+2026-11-24 19:51:44,278 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mPOST /tasks HTTP/1.1[0m" 400 -
+2026-11-24 19:51:44,280 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mPOST /tasks HTTP/1.1[0m" 400 -
+2026-11-24 19:51:44,294 INFO controllers.task_controller: Task atualizada: 11
+2026-11-24 19:51:44,294 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "PUT /tasks/11 HTTP/1.1" 200 -
+2026-11-24 19:51:44,296 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mDELETE /tasks/11 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:44,300 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /users HTTP/1.1" 200 -
+2026-11-24 19:51:44,304 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /users/1 HTTP/1.1" 200 -
+2026-11-24 19:51:44,418 INFO controllers.user_controller: Usuário criado: 4
+2026-11-24 19:51:44,418 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[35m[1mPOST /users HTTP/1.1[0m" 201 -
+2026-11-24 19:51:44,421 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mPOST /users HTTP/1.1[0m" 401 -
+2026-11-24 19:51:44,424 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mPOST /users HTTP/1.1[0m" 400 -
+2026-11-24 19:51:44,438 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "PUT /users/4 HTTP/1.1" 200 -
+2026-11-24 19:51:44,440 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /users/1/tasks HTTP/1.1" 200 -
+2026-11-24 19:51:44,528 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "POST /login HTTP/1.1" 200 -
+2026-11-24 19:51:44,616 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2026-11-24 19:51:44,617 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mGET /reports/summary HTTP/1.1[0m" 401 -
+2026-11-24 19:51:44,618 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mGET /reports/user/1 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:44,621 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "GET /categories HTTP/1.1" 200 -
+2026-11-24 19:51:44,633 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[35m[1mPOST /categories HTTP/1.1[0m" 201 -
+2026-11-24 19:51:44,647 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "PUT /categories/5 HTTP/1.1" 200 -
+2026-11-24 19:51:44,649 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mDELETE /categories/5 HTTP/1.1[0m" 401 -
+2026-11-24 19:51:44,650 INFO werkzeug: 127.0.0.1 - - [24/Nov/2026 19:51:44] "[31m[1mDELETE /users/4 HTTP/1.1[0m" 401 -
